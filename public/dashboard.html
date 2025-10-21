@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Dashboard - Matrix Pro Investing</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div class="app">
+  <h1>Dashboard</h1>
+  <button class="btn" onclick="logout()">Logout</button>
+
+  <h2>Bonus ADM</h2>
+  <table class="table" id="bonus">
+    <thead><tr><th>Bookmaker</th><th>Tipo</th><th>Nome</th><th>Scadenza</th><th>Profitto</th></tr></thead>
+    <tbody></tbody>
+  </table>
+
+  <h2>Amici</h2>
+  <div id="friends"></div>
+
+  <h2>Matrix Assistant</h2>
+  <div class="chat" id="chat"></div>
+  <input id="prompt" placeholder="Chiedi al coach..." onkeydown="if(event.key==='Enter')send()">
+  <button class="btn" onclick="send()">Invia</button>
+</div>
+
+<script>
+const user = JSON.parse(localStorage.getItem('user')||'{}');
+if(!user.email){ window.location='login.html'; }
+
+async function loadBonus(){
+  const r = await fetch('/api/bonuses');
+  const j = await r.json();
+  const tbody=document.querySelector('#bonus tbody'); tbody.innerHTML='';
+  j.forEach(b=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${b.bookmaker}</td><td>${b.tipo}</td><td>${b.nome}</td><td>${b.scadenza}</td><td>${b.profitto}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+async function loadFriends(){
+  const r=await fetch('/api/friends');
+  const j=await r.json();
+  document.getElementById('friends').innerHTML=j.map(f=>`<div>${f.name} - ${f.status}</div>`).join('');
+}
+
+async function send(){
+  const p=document.getElementById('prompt').value;
+  if(!p)return;
+  append('Tu',p);
+  document.getElementById('prompt').value='';
+  const r=await fetch('/api/coach',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:p})});
+  const j=await r.json();
+  append('Matrix Assistant',j.reply);
+}
+function append(who,text){
+  const c=document.getElementById('chat');
+  c.innerHTML+=`<div><b>${who}:</b> ${text}</div>`;
+  c.scrollTop=c.scrollHeight;
+}
+function logout(){ localStorage.removeItem('user'); window.location='login.html'; }
+
+loadBonus();loadFriends();
+</script>
+</body>
+</html>
