@@ -7,6 +7,7 @@ dotenv.config();
 const app = express();
 app.use(bodyParser.json());
 app.use(express.static("public"));
+app.get("/", (req, res) => res.sendFile("index.html", { root: "public" }));
 
 app.post("/api/coach", async (req, res) => {
   const { prompt } = req.body;
