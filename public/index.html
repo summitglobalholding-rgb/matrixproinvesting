@@ -1,25 +1,22 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="it">
-<head> link rel="stylesheet" href="style.css">
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Matrix Pro Investing</title>
-  <style>
-    body { margin:0; background:#0d0f10; color:#b0f8e4; font-family:monospace }
-    <canvas id="matrix-bg"></canvas>
-<script src="matrix-bg.js"></script>
-    #app { padding:20px; max-width:900px; margin:auto; background:rgba(13,15,16,0.9); border:1px solid #00ffae; border-radius:8px; margin-top:40px }
-    h1 { text-align:center; color:#00ffae; }
-    .chat { height:250px; overflow:auto; background:#081014; padding:10px; border-radius:6px; margin-bottom:10px; }
-    input, button { width:100%; padding:8px; margin-top:6px; background:#0d0f10; color:#00ffae; border:1px solid #00ffae; border-radius:4px; }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="app">
-  <h1>Matrix Pro Investing</h1>
-  <div class="chat" id="chat"></div>
-  <input id="prompt" placeholder="Chiedi a Matrix Assistant..." />
-  <button onclick="send()">Invia</button>
+  <canvas id="matrix-bg"></canvas>
+  <script src="matrix-bg.js"></script>
+
+  <div class="container">
+    <h1>Matrix Pro Investing</h1>
+    <div class="chat-box" id="chat"></div>
+
+    <div class="chat-input">
+      <input id="prompt" placeholder="Chiedi a Matrix Assistant...">
+      <button onclick="sendMessage()">Invia</button>
 </div>
 
 <script>
