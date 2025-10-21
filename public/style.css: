@@ -1,26 +1,4 @@
-<!DOCTYPE html>
-<html lang="it">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Matrix Pro Investing</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <canvas id="matrix-bg"></canvas>
-  <script src="matrix-bg.js"></script>
-
-  <div class="container">
-    <h1>Matrix Pro Investing</h1>
-    <div class="chat-box" id="chat"></div>
-
-    <div class="chat-input">
-      <input id="prompt" placeholder="Chiedi a Matrix Assistant...">
-      <button onclick="sendMessage()">Invia</button>
-    </div>
-  </div>
-</body>
-</html>/* MATRIX PRO INVESTING - STYLE */
+ MATRIX PRO INVESTING - STYLE */
 
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
