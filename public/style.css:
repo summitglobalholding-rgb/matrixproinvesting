@@ -1,17 +1,15 @@
- MATRIX PRO INVESTING - STYLE */
-
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
 body {
   margin: 0;
-  overflow: hidden;
-  font-family: 'Share Tech Mono', monospace;
+  overflow-x: hidden;
   background-color: #0a0f0f;
+  font-family: 'Share Tech Mono', monospace;
   color: #00ffd9;
 }
 
-/* Canvas animato sullo sfondo */
-canvas#matrix-bg {
+/* Canvas sfondo Matrix */
+#matrix-bg {
   position: fixed;
   top: 0;
   left: 0;
@@ -21,7 +19,7 @@ canvas#matrix-bg {
   pointer-events: none;
 }
 
-/* Contenuto principale */
+/* Contenitori principali */
 .container {
   position: relative;
   z-index: 1;
@@ -36,25 +34,10 @@ canvas#matrix-bg {
   color: #00ffd9;
 }
 
-/* Titolo */
 h1, h2 {
   color: #00ffcc;
   text-align: center;
   text-shadow: 0 0 10px #00ffaa;
-  margin-bottom: 20px;
-}
-
-/* Tabelle e pulsanti */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-}
-
-th, td {
-  border: 1px solid #00ffaa;
-  padding: 8px;
-  text-align: center;
 }
 
 button, input {
@@ -72,25 +55,35 @@ button:hover {
   background: #00ffaa;
   color: #000;
   cursor: pointer;
+  box-shadow: 0 0 10px #00ffaa;
 }
 
-/* Sezioni */
+/* Tabelle e sezioni */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #00ffaa;
+}
+th, td {
+  border: 1px solid #00ffaa;
+  padding: 8px;
+}
+
 .section {
   margin-top: 30px;
-  padding: 15px;
   border: 1px solid #00ffaa;
   border-radius: 5px;
+  padding: 10px;
 }
 
-/* Chat Matrix Assistant */
+/* Chat */
 .chat-box {
   height: 250px;
   overflow-y: auto;
   background: rgba(0, 0, 0, 0.8);
-  padding: 10px;
   border-radius: 5px;
+  padding: 10px;
   border: 1px solid #00ffaa;
-  font-size: 14px;
 }
 
 .chat-input {
@@ -99,7 +92,31 @@ button:hover {
   margin-top: 10px;
 }
 
-.chat-input input {
-  flex: 1;
+/* Login form */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: center;
 }
 
+.login-form input {
+  width: 80%;
+  margin: 0 auto;
+}
+
+/* Logout */
+.logout {
+  text-align: center;
+  margin-top: 20px;
+}
+.logout a {
+  color: #00ffaa;
+  text-decoration: none;
+}
+.logout a:hover {
+  color: #000;
+  background: #00ffaa;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
