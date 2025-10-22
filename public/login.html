@@ -1,60 +1,23 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Login - Matrix Pro Investing</title>
-  <link rel="stylesheet" href="style.css"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Matrix Pro Investing</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="app">
-  <h1>Matrix Pro Investing</h1>
+  <canvas id="matrix-bg"></canvas>
+  <script src="matrix-bg.js"></script>
 
-  <div id="loginBox">
-    <input id="email" placeholder="Email" type="text">
-    <input id="password" placeholder="Password" type="password">
-    <button class="btn" onclick="login()">Accedi</button>
-    <p>Non hai un account? <a href="#" onclick="showRegister()">Registrati</a></p>
+  <div class="container">
+    <h1>Matrix Pro Investing</h1>
+    <h2>Accesso Utente</h2>
+    <form action="index.html" method="get" class="login-form">
+      <input type="text" placeholder="Username" required>
+      <input type="password" placeholder="Password" required>
+      <button type="submit">Entra nel Sistema</button>
+    </form>
   </div>
-
-  <div id="registerBox" style="display:none;">
-    <input id="newName" placeholder="Nome completo" type="text">
-    <input id="newEmail" placeholder="Email" type="text">
-    <input id="newPass" placeholder="Password" type="password">
-    <button class="btn" onclick="register()">Crea Account</button>
-    <p><a href="#" onclick="showLogin()">Torna al login</a></p>
-  </div>
-</div>
-
-<script>
-function showRegister(){
-  document.getElementById('loginBox').style.display='none';
-  document.getElementById('registerBox').style.display='block';
-}
-function showLogin(){
-  document.getElementById('registerBox').style.display='none';
-  document.getElementById('loginBox').style.display='block';
-}
-
-async function login(){
-  const email=document.getElementById('email').value.trim();
-  const password=document.getElementById('password').value.trim();
-  const res=await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});
-  const j=await res.json();
-  if(!j.ok){alert('Credenziali non valide');return;}
-  localStorage.setItem('user',JSON.stringify(j.user));
-  window.location='dashboard.html';
-}
-
-async function register(){
-  const name=document.getElementById('newName').value.trim();
-  const email=document.getElementById('newEmail').value.trim();
-  const pass=document.getElementById('newPass').value.trim();
-  const res=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,email,pass})});
-  const j=await res.json();
-  if(j.ok){alert('Account creato! Ora effettua il login');showLogin();}
-  else alert('Email già registrata');
-}
-</script>
 </body>
 </html>
