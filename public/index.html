@@ -1,114 +1,80 @@
 <!DOCTYPE html>
 <html lang="it">
-<head> link rel="stylesheet" href="style.css" <head>
-
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Matrix Pro Investing</title>
+  <title>Matrix Pro Investing – Plancia Bonus</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Matrix Pro Investing</h1>
+  <canvas id="matrix-bg"></canvas>
+  <script src="matrix-bg.js"></script>
 
-    <!-- Sezione Bonus ADM -->
-    <h2>Bonus ADM</h2>
-    <table>
+  <div class="container">
+    <h1>💻 Matrix Pro Investing</h1>
+    <h2>Plancia Bonus ADM</h2>
+
+    <div class="actions">
+      <button id="refresh">🔄 Aggiorna Bonus</button>
+    </div>
+
+    <table id="bonusTable">
       <thead>
         <tr>
           <th>Bookmaker</th>
           <th>Tipo</th>
-          <th>Nome</th>
+          <th>Nome Bonus</th>
+          <th>Categoria</th>
           <th>Scadenza</th>
           <th>Profitto</th>
+          <th>Stato</th>
+          <th>Link</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td>SNAI</td>
-          <td>Ricorrente</td>
-          <td>Multipla +5%</td>
-          <td>2025-10-31</td>
-          <td>+3€</td>
-        </tr>
-        <tr>
-          <td>StarCasino</td>
-          <td>Casino</td>
-          <td>Free Spin 50</td>
-          <td>2025-10-31</td>
-          <td>+5€</td>
-        </tr>
-        <tr>
-          <td>Revolut</td>
-          <td>Benvenuto</td>
-          <td>Bonus iscrizione 10€</td>
-          <td>2025-12-31</td>
-          <td>+10€</td>
-        </tr>
+      <tbody id="bonusBody">
+        <tr><td colspan="8" style="text-align:center;">Caricamento in corso...</td></tr>
       </tbody>
     </table>
-
-    <!-- Sezione Amici -->
-    <h2>Amici</h2>
-    <ul>
-      <li>Marco – Attivo</li>
-      <li>Luca – Sospeso</li>
-    </ul>
-
-    <!-- Matrix Assistant -->
-    <h2>Matrix Assistant</h2>
-    <div class="chat-box">
-      <div id="chat-log" class="chat-log">
-        <p><strong>Matrix Assistant:</strong> Sistema operativo pronto. 💻</p>
-      </div>
-      <form id="chat-form">
-        <input type="text" id="user-input" placeholder="Chiedi al Coach Matrix..." autocomplete="off" />
-        <button type="submit">Invia</button>
-      </form>
-    </div>
-
-    <p style="text-align:center; margin-top:20px;">
-      <a href="login.html">Logout</a>
-    </p>
   </div>
 
   <footer>
-    <p>© 2025 Matrix Pro Investing — All rights reserved.</p>
+    <p>© 2025 Matrix Pro Investing – Sistema Bonus Live</p>
   </footer>
 
   <script>
-    const chatForm = document.getElementById('chat-form');
-    const userInput = document.getElementById('user-input');
-    const chatLog = document.getElementById('chat-log');
+    const bonusBody = document.getElementById("bonusBody");
+    const refreshBtn = document.getElementById("refresh");
 
-    chatForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const message = userInput.value.trim();
-      if (!message) return;
-
-      appendMessage('Tu', message);
-      userInput.value = '';
-
+    async function loadBonus() {
       try {
-        const res = await fetch('/api/assistant', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message })
-        });
-
+        const res = await fetch("data/bonus.json?_=" + new Date().getTime());
         const data = await res.json();
-        appendMessage('Matrix Assistant', data.reply);
-      } catch (err) {
-        appendMessage('Matrix Assistant', '❌ Errore nella risposta.');
+        renderTable(data);
+      } catch (e) {
+        bonusBody.innerHTML = `<tr><td colspan="8" style="text-align:center;">Errore nel caricamento.</td></tr>`;
       }
-    });
-
-    function appendMessage(sender, text) {
-      const p = document.createElement('p');
-      p.innerHTML = `<strong>${sender}:</strong> ${text}`;
-      chatLog.appendChild(p);
-      chatLog.scrollTop = chatLog.scrollHeight;
     }
+
+    function renderTable(bonusList) {
+      bonusBody.innerHTML = "";
+      bonusList.forEach(b => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${b.bookmaker}</td>
+          <td>${b.tipo}</td>
+          <td>${b.nome}</td>
+          <td><span class="cat ${b.categoria.toLowerCase()}">${b.categoria}</span></td>
+          <td>${b.scadenza}</td>
+          <td>${b.profitto}</td>
+          <td><span class="stato ${b.stato.toLowerCase()}">${b.stato}</span></td>
+          <td><a href="${b.link}" target="_blank">🌐</a></td>
+        `;
+        bonusBody.appendChild(tr);
+      });
+    }
+
+    refreshBtn.addEventListener("click", loadBonus);
+    loadBonus();
   </script>
 </body>
 </html>
