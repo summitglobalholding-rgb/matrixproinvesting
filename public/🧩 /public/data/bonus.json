@@ -1,0 +1,32 @@
+[
+  {
+    "bookmaker": "SNAI",
+    "tipo": "Ricorrente",
+    "nome": "Multipla 5%",
+    "categoria": "Sport",
+    "scadenza": "2025-10-31",
+    "profitto": "+3€",
+    "stato": "Attivo",
+    "link": "https://www.snai.it"
+  },
+  {
+    "bookmaker": "StarCasino",
+    "tipo": "Benvenuto",
+    "nome": "50 Free Spin",
+    "categoria": "Casinò",
+    "scadenza": "2025-10-31",
+    "profitto": "+5€",
+    "stato": "Attivo",
+    "link": "https://www.starcasino.it"
+  },
+  {
+    "bookmaker": "Revolut",
+    "tipo": "Benvenuto",
+    "nome": "Bonus iscrizione 10€",
+    "categoria": "Fintech",
+    "scadenza": "2025-12-31",
+    "profitto": "+10€",
+    "stato": "In Scadenza",
+    "link": "https://www.revolut.com"
+  }
+]
