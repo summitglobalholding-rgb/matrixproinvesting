@@ -1,69 +1,62 @@
 import express from "express";
-import bodyParser from "body-parser";
+import path from "path";
+import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import fetch from "node-fetch";
+
 dotenv.config();
 
 const app = express();
-app.use(bodyParser.json());
-app.use(express.static("public"));
+const PORT = process.env.PORT || 10000;
 
-const users = [
-  { email: "admin@matrix", pass: "Reverse.rvs3", name: "Admin", role: "admin" }
-];
-const friends = [
-  { name: "Marco", status: "Attivo" },
-  { name: "Luca", status: "Sospeso" }
-];
-const bonuses = [
-  { bookmaker:"SNAI", tipo:"Ricorrente", nome:"Multipla +5%", scadenza:"2025-10-31", profitto:"+2.3€" },
-  { bookmaker:"StarCasino", tipo:"Casino", nome:"Free Spin 50", scadenza:"2025-10-31", profitto:"+5€" },
-  { bookmaker:"Revolut", tipo:"Benvenuto", nome:"Bonus iscrizione 10€", scadenza:"2025-12-31", profitto:"+10€" }
-];
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-app.post("/api/login",(req,res)=>{
-  const {email,password}=req.body;
-  const u=users.find(x=>x.email===email && x.pass===password);
-  if(!u)return res.json({ok:false});
-  res.json({ok:true,user:{email:u.email,name:u.name,role:u.role}});
+// Serve file statici dalla cartella public
+app.use(express.static(path.join(__dirname, "public")));
+app.use(express.json());
+
+// Rotta per la dashboard (pagina principale)
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-app.post("/api/register",(req,res)=>{
-  const {name,email,pass}=req.body;
-  if(users.find(u=>u.email===email))return res.json({ok:false});
-  users.push({name,email,pass,role:"user"});
-  res.json({ok:true});
+// Rotta per login
+app.get("/login", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "login.html"));
 });
 
-app.get("/api/bonuses",(req,res)=>res.json(bonuses));
-app.get("/api/friends",(req,res)=>res.json(friends));
-app.get("/api/users",(req,res)=>res.json(users));
+// Rotta API per Matrix Assistant
+app.post("/api/assistant", async (req, res) => {
+  try {
+    const { message } = req.body;
 
-app.post("/api/coach",async(req,res)=>{
-  const {prompt}=req.body;
-  const key=process.env.OPENAI_API_KEY;
-  try{
-    const r=await fetch("https://api.openai.com/v1/chat/completions",{
-      method:"POST",
-      headers:{
-        "Authorization":"Bearer "+key,
-        "Content-Type":"application/json"
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
       },
-      body:JSON.stringify({
-        model:"gpt-4o-mini",
-        messages:[
-          {role:"system",content:"Sei Matrix Assistant, coach chiaro e diretto."},
-          {role:"user",content:prompt}
-        ]
-      })
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        messages: [
+          { role: "system", content: "Sei Matrix Assistant, un coach finanziario per l’intermediazione e i bonus ADM." },
+          { role: "user", content: message },
+        ],
+      }),
     });
-    const j=await r.json();
-    const text=j?.choices?.[0]?.message?.content || "Errore nella risposta.";
-    res.json({reply:text});
-  }catch(e){
-    res.json({reply:"Errore di connessione al coach."});
+
+    const data = await response.json();
+    const reply = data.choices?.[0]?.message?.content || "Errore nella risposta.";
+
+    res.json({ reply });
+  } catch (err) {
+    console.error("Errore API:", err);
+    res.status(500).json({ reply: "Errore del server Matrix Assistant." });
   }
 });
 
-app.get("/",(req,res)=>res.sendFile("index.html",{root:"public"}));
-app.listen(10000,()=>console.log("Matrix Pro Investing in esecuzione su porta 10000"));
+// Avvio server
+app.listen(PORT, () => {
+  console.log(`Matrix Pro Investing in esecuzione sulla porta ${PORT}`);
+});
