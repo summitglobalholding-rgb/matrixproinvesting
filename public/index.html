@@ -7,69 +7,108 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <canvas id="matrix-bg"></canvas>
-  <script src="matrix-bg.js"></script>
-
   <div class="container">
     <h1>Matrix Pro Investing</h1>
 
-    <div class="section">
-      <h2>Bonus ADM</h2>
-      <table>
-        <tr><th>Bookmaker</th><th>Tipo</th><th>Nome</th><th>Scadenza</th><th>Profitto</th></tr>
-        <tr><td>SNAI</td><td>Ricorrente</td><td>Multipla +5%</td><td>2025-10-31</td><td>+3€</td></tr>
-        <tr><td>StarCasino</td><td>Casino</td><td>Free Spin 50</td><td>2025-10-31</td><td>+5€</td></tr>
-        <tr><td>Revolut</td><td>Benvenuto</td><td>Bonus iscrizione 10€</td><td>2025-12-31</td><td>+10€</td></tr>
-      </table>
-    </div>
+    <!-- Sezione Bonus ADM -->
+    <h2>Bonus ADM</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Bookmaker</th>
+          <th>Tipo</th>
+          <th>Nome</th>
+          <th>Scadenza</th>
+          <th>Profitto</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>SNAI</td>
+          <td>Ricorrente</td>
+          <td>Multipla +5%</td>
+          <td>2025-10-31</td>
+          <td>+3€</td>
+        </tr>
+        <tr>
+          <td>StarCasino</td>
+          <td>Casino</td>
+          <td>Free Spin 50</td>
+          <td>2025-10-31</td>
+          <td>+5€</td>
+        </tr>
+        <tr>
+          <td>Revolut</td>
+          <td>Benvenuto</td>
+          <td>Bonus iscrizione 10€</td>
+          <td>2025-12-31</td>
+          <td>+10€</td>
+        </tr>
+      </tbody>
+    </table>
 
-    <div class="section">
-      <h2>Amici</h2>
-      <ul>
-        <li>Marco – Attivo</li>
-        <li>Luca – Sospeso</li>
-      </ul>
-    </div>
+    <!-- Sezione Amici -->
+    <h2>Amici</h2>
+    <ul>
+      <li>Marco – Attivo</li>
+      <li>Luca – Sospeso</li>
+    </ul>
 
-    <div class="section">
-      <h2>Matrix Assistant</h2>
-      <div class="chat-box" id="chat">
-        <p><b>Matrix Assistant:</b> Sistema operativo pronto.</p>
+    <!-- Matrix Assistant -->
+    <h2>Matrix Assistant</h2>
+    <div class="chat-box">
+      <div id="chat-log" class="chat-log">
+        <p><strong>Matrix Assistant:</strong> Sistema operativo pronto. 💻</p>
       </div>
-      <div class="chat-input">
-        <input id="prompt" placeholder="Chiedi al Coach Matrix...">
-        <button onclick="sendMessage()">Invia</button>
-      </div>
+      <form id="chat-form">
+        <input type="text" id="user-input" placeholder="Chiedi al Coach Matrix..." autocomplete="off" />
+        <button type="submit">Invia</button>
+      </form>
     </div>
 
-    <div class="logout">
+    <p style="text-align:center; margin-top:20px;">
       <a href="login.html">Logout</a>
-    </div>
+    </p>
   </div>
 
+  <footer>
+    <p>© 2025 Matrix Pro Investing — All rights reserved.</p>
+  </footer>
+
   <script>
-    async function sendMessage() {
-      const input = document.getElementById("prompt");
-      const chat = document.getElementById("chat");
-      const userMsg = input.value.trim();
-      if (!userMsg) return;
-      chat.innerHTML += `<p><b>Tu:</b> ${userMsg}</p>`;
-      input.value = "";
+    const chatForm = document.getElementById('chat-form');
+    const userInput = document.getElementById('user-input');
+    const chatLog = document.getElementById('chat-log');
+
+    chatForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const message = userInput.value.trim();
+      if (!message) return;
+
+      appendMessage('Tu', message);
+      userInput.value = '';
 
       try {
-        const res = await fetch("/api/coach", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt: userMsg }),
+        const res = await fetch('/api/assistant', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message })
         });
-        const data = await res.json();
-        chat.innerHTML += `<p><b>Matrix Assistant:</b> ${data.reply || "Errore nella risposta."}</p>`;
-      } catch {
-        chat.innerHTML += `<p><b>Matrix Assistant:</b> Errore di connessione.</p>`;
-      }
 
-      chat.scrollTop = chat.scrollHeight;
+        const data = await res.json();
+        appendMessage('Matrix Assistant', data.reply);
+      } catch (err) {
+        appendMessage('Matrix Assistant', '❌ Errore nella risposta.');
+      }
+    });
+
+    function appendMessage(sender, text) {
+      const p = document.createElement('p');
+      p.innerHTML = `<strong>${sender}:</strong> ${text}`;
+      chatLog.appendChild(p);
+      chatLog.scrollTop = chatLog.scrollHeight;
     }
   </script>
 </body>
 </html>
+
