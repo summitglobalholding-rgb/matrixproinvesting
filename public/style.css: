@@ -26,4 +26,127 @@ body {
   background: rgba(0, 0, 0, 0.7);
   border: 1px solid #00ffaa;
   border-radius: 10px;
-  box-shadow: 0 0 25px rgba(0, 255
+  box-shadow: 0 0 25px rgba(0, 255, 170, 0.5);
+  width: 90%;
+  max-width: 900px;
+  margin: 60px auto;
+  padding: 25px;
+  color: #00ffd9;
+}
+
+/* Titoli */
+h1, h2 {
+  text-align: center;
+  color: #00ffcc;
+  text-shadow: 0 0 15px #00ffaa;
+}
+
+/* Tabelle */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+  color: #00ffcc;
+  margin-top: 10px;
+  border: 1px solid #00ffaa;
+  box-shadow: 0 0 20px rgba(0, 255, 170, 0.2);
+}
+
+.table th, .table td {
+  border: 1px solid #00ffaa;
+  padding: 12px;
+  text-align: center;
+}
+
+.table th {
+  background: #003326;
+  color: #00ffaa;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.table tr:nth-child(even) {
+  background: rgba(0, 255, 170, 0.05);
+}
+
+.table tr:hover {
+  background: rgba(0, 255, 170, 0.15);
+  transition: 0.2s;
+}
+
+/* Amici */
+.friends {
+  list-style: none;
+  padding: 0;
+  text-align: center;
+}
+.status.attivo {
+  color: #00ffaa;
+}
+.status.sospeso {
+  color: #ff6666;
+}
+
+/* Chat */
+.chat-box {
+  height: 250px;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 5px;
+  padding: 10px;
+  border: 1px solid #00ffaa;
+}
+
+.chat-input {
+  display: flex;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+input, button {
+  background: #000;
+  color: #00ffaa;
+  border: 1px solid #00ffaa;
+  border-radius: 5px;
+  padding: 10px;
+  font-family: inherit;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #00ffaa;
+  color: #000;
+  cursor: pointer;
+  box-shadow: 0 0 10px #00ffaa;
+}
+
+/* Login form */
+.login-container {
+  text-align: center;
+}
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+.login-form input {
+  width: 70%;
+}
+
+/* Logout */
+.logout {
+  text-align: center;
+  margin-top: 20px;
+}
+.logout a {
+  color: #00ffaa;
+  text-decoration: none;
+  transition: 0.3s;
+}
+.logout a:hover {
+  color: #000;
+  background: #00ffaa;
+  padding: 6px 12px;
+  border-radius: 6px;
+}
